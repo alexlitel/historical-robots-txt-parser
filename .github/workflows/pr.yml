@@ -1,0 +1,36 @@
+# Taken mostly from https://medium.com/@vanflymen/blazing-fast-ci-with-github-actions-poetry-black-and-pytest-9e74299dd4a5
+
+name: Pull request checks
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  test:
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Install Poetry
+        uses: dschep/install-poetry-action@v1.2
+      - name: Cache Poetry virtualenv
+        uses: actions/cache@v1
+        id: cache-dependencies
+        with:
+          path: ~/.virtualenvs
+          key: poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            poetry-${{ hashFiles('**/poetry.lock') }}
+      - name: Set Poetry config
+        run: |
+          poetry config virtualenvs.in-project false
+          poetry config virtualenvs.path ~/.virtualenvs
+      - name: Install Dependencies
+        run: poetry install
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+      - name: Code quality check
+        run: poetry run black . --check
+      - name: Test with pytest
+        run: poetry run pytest
