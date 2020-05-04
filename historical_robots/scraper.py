@@ -19,7 +19,7 @@ class WaybackScraper:
         custom_params = f"&{urlencode(self.params)}" if self.params else ""
         request_url = (
             "http://web.archive.org/cdx/search/cdx"
-            f"?url={self.domain}/robots.txt&output=csv"
+            f"?url={self._domain}/robots.txt&output=csv"
             "&showDupeCount=true&collapse=digest"
             "&filter=statuscode:200&filter=mimetype:text/plain"
             "&fl=timestamp,dupecount"
@@ -48,7 +48,10 @@ class WaybackScraper:
             parsed_time = time.strptime(timestamp, "%Y%m%d%H%M%S")
             clean_timestamp = time.strftime("%Y-%m-%d %H:%M:%S", parsed_time)
             request_url = (
-                "https://web.archive.org/web/" f"{timestamp}if_/{self._url}/robots.txt"
+                "https://web.archive.org/web/"
+                f"{timestamp}i_/"
+                f"{self._domain}/"
+                "robots.txt"
             )
             keys = []
             data = parse_robots_txt(request_url, self.accept_allow)
