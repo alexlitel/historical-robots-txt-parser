@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "historical-robots-txt-parser"
-version = "0.1.0"
+version = "0.1.2"
 description = "Parses historical robots.txt files from Wayback Machine"
 authors = ["Alex Litel"]
 license = 'MIT'

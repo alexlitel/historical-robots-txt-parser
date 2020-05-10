@@ -25,6 +25,7 @@ class WaybackScraper:
             "&fl=timestamp,dupecount"
             f"{custom_params}"
         )
+
         with requests.get(request_url, stream=True) as res:
             lines = [line for line in res.iter_lines(decode_unicode=True)]
             data = csv.reader(lines, delimiter=" ")
@@ -54,8 +55,8 @@ class WaybackScraper:
                 "robots.txt"
             )
             keys = []
-            data = parse_robots_txt(request_url, self.accept_allow)
             print(f"Requesting data for {clean_timestamp}")
+            data = parse_robots_txt(request_url, self.accept_allow)
             for agent, paths in data.items():
                 for path, rule in paths.items():
                     key = "_".join([agent, path, rule])
@@ -69,8 +70,8 @@ class WaybackScraper:
 
             removed_rules = [key for key in prev_keys if key not in keys]
             for rule in removed_rules:
-                if not data_dict[key][3]:
-                    data_dict[key][3] = clean_timestamp
+                if not data_dict[rule][3]:
+                    data_dict[rule][3] = clean_timestamp
 
             prev_keys = keys
 
@@ -83,7 +84,7 @@ class WaybackScraper:
         with open(file_path, "w") as csv_file:
             csv_writer = csv.writer(csv_file, delimiter=",")
             fieldnames = ["User Agent", "Path", "Date Added", "Date Removed"]
-            if hasattr(self, "accept_allow"):
+            if self.accept_allow:
                 fieldnames.append("Rule")
             csv_writer.writerow(fieldnames)
             csv_writer.writerows(data)

@@ -21,13 +21,20 @@ class RobotTxtParser:
         data_dict = {}
         user_agent = None
         for line in lines:
+            if "user agent" in line.lower():
+                line = re.sub(r"user\sagent:", line, "user-agent", flags=re.IGNORECASE)
             rule, *values = filter(None, re.split(r"\s+|\t+", line.strip()))
+            rule = rule or ""
             value = values[0] if len(values) else ""
             if rule.lower().startswith("user-agent"):
                 user_agent = value
                 if user_agent not in data_dict:
                     data_dict[user_agent] = {}
             else:
+                if not user_agent:
+                    user_agent = "*"
+                    if user_agent not in data_dict:
+                        data_dict[user_agent] = {}
                 data_dict[user_agent][value] = rule[:-1]
         # Remove user agents with empty dicts rather than
         # using slow, complex regex in check_valid_line
