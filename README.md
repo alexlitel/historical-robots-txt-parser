@@ -4,7 +4,7 @@
 
 # Historical Robots.txt Parser
 
-This is a small Python package that parses the historical robots.txt files from the Internet Archive's Wayback Machine and coerces the data into a CSV file for tracking addition and removal of `Allow` and `Disallow` rules by timestamp of addition, path, user-agent, rule type (optional), . It's a fairly narrow use case but may be helpful to researchers or journalists.
+This is a small Python package that parses the historical robots.txt files from the Internet Archive's Wayback Machine and coerces the data into a CSV file for tracking addition and removal of `Allow` and `Disallow` rules by timestamp of addition, path, user-agent, rule type (optional). It's a fairly narrow use case but may be helpful to researchers or journalists.
 
 It also includes a parser to coerce a robots.txt file into a dictionary.
 
@@ -29,7 +29,7 @@ poetry install
 There is a `requirements.txt` file included here, so you can also use `pip3 install -r requirements.txt` if you don't want to use Poetry.
 
 ## Usage
-There are two functions included in the package: `parse_robots_txt` and `historical_scraper`. `historical_scraper` scrapes the historical files for a domain from the Wayback Machine and exports to a CSV. `parse_robots_txt` makes a request to a robots.txt file, parses and coerces it to a dictionary.
+There are two functions included in the package: `parse_robots_txt` and `historical_scraper`. `historical_scraper` scrapes the historical files for a domain from the Wayback Machine and exports to a CSV. `parse_robots_txt` makes a request to a robots.txt file, parses and coerces it to a dictionary. If you clone the repo, there's a file `app.py` which takes command line arguments for domains to scrape.
 
 
 ### historical_scraper
